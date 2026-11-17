@@ -21,8 +21,9 @@ lineas = []
 
 
 def log(texto):
-    print(texto)
+    print(texto, flush=True)
     lineas.append(texto)
+    SALIDA.write_text("\n".join(lineas) + "\n", encoding="utf-8")  # se guarda aunque se corte
 
 
 def peticion(url, metodo="GET", form=None, json_cuerpo=None, tokens=()):
@@ -80,17 +81,24 @@ def variantes(ig_id, token, host=API):
         log(f"    [{ 'OK ' if ok else 'ERR'}] {nombre}: {t}")
 
 
+def datetime_now():
+    from datetime import datetime
+    return datetime.utcnow().strftime("%H:%M:%S UTC")
+
+
 def main():
     """Cuarta ronda: ensayo de carruseles e historias de la cola marcados como "ensayo".
     Usa publicar.py con ensayo=True: crea los borradores y para ANTES de media_publish."""
     import sys
     sys.path.insert(0, str(Path(__file__).parent))
     import publicar as pub
+    pub.print = lambda *a, **k: log(" ".join(map(str, a)))  # lo que vaya diciendo, al informe
     log("=== DIAGNÓSTICO 4 (no publica nada): ensayo de carruseles e historias ===")
     for ficha in sorted((Path(__file__).parent / "cola").glob("*/publicacion.json")):
         datos = json.loads(ficha.read_text(encoding="utf-8"))
         if datos.get("estado") != "ensayo":
             continue
+        log(f"empiezo {ficha.parent.name} ({datetime_now()})")
         try:
             _, detalle = pub.publicar(ficha.parent, datos, ensayo=True)
             log(f"ENSAYO {ficha.parent.name}: OK, Instagram acepta {detalle}; no publicado")

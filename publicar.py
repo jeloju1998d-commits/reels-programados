@@ -108,13 +108,15 @@ def url_publica(carpeta, nombre):
 
 
 def esperar(contenedor, token, que="el archivo"):
-    for _ in range(40):  # hasta ~13 minutos
+    pausas = [2, 3, 5, 10] + [20] * 40  # rápido al principio (las imágenes tardan poco); hasta ~13 min
+    for pausa in pausas:
         estado = llamar(f"{API}/{contenedor}?fields=status_code,status&access_token={token}")
-        if estado["status_code"] == "FINISHED":
+        if estado.get("status_code") == "FINISHED":
             return
-        if estado["status_code"] in ("ERROR", "EXPIRED"):
+        if estado.get("status_code") in ("ERROR", "EXPIRED"):
             raise RuntimeError(f"Instagram rechazó {que}: {estado}")
-        time.sleep(20)
+        print(f"    {que}: {estado.get('status_code')} {estado.get('status', '')}"[:200])
+        time.sleep(pausa)
     raise RuntimeError(f"Instagram no terminó de procesar {que} a tiempo")
 
 
@@ -155,9 +157,9 @@ def publicar_carrusel(carpeta, datos, ensayo=False):
             campos.update(media_type="VIDEO", video_url=url)
         else:
             campos["image_url"] = url
-        hijo = llamar_json(f"{API}/{ig_id}/media", campos)["id"]
+        hijos.append(llamar_json(f"{API}/{ig_id}/media", campos)["id"])
+    for nombre, hijo in zip(datos["archivos"], hijos):  # se procesan a la vez; aquí solo se espera
         esperar(hijo, token, nombre)
-        hijos.append(hijo)
         print(f"  diapositiva {nombre} lista ({hijo})")
     padre = llamar_json(f"{API}/{ig_id}/media", {
         "media_type": "CAROUSEL", "children": ",".join(hijos),

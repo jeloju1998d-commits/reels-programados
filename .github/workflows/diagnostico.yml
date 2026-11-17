@@ -12,7 +12,7 @@ permissions:
 jobs:
   diagnostico:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,8 +25,9 @@ jobs:
           IG_FB_TOKEN: ${{ secrets.IG_FB_TOKEN }}
           IG_TOKEN_JESUSLOPEZFITNESS: ${{ secrets.IG_TOKEN_JESUSLOPEZFITNESS }}
           IG_TOKEN_JESUSS_FITNESS: ${{ secrets.IG_TOKEN_JESUSS_FITNESS }}
-        run: python diagnostico.py
+        run: timeout 25m python -u diagnostico.py || true
       - name: Guardar el resultado
+        if: always()
         run: |
           git config user.name "publicador"
           git config user.email "publicador@users.noreply.github.com"
