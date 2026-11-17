@@ -47,7 +47,11 @@ def encolar(a, cuenta, cuando, descripcion, dur, variante):
                         "-c:a", "aac", "-b:a", "160k", "-ar", "48000",
                         "-movflags", "+faststart", destino], check=True)
     else:
-        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", a.video, "-c", "copy",
+        # Vídeo intacto; el audio se rehace solo si no cumple lo que pide Instagram (AAC, máx. 48 kHz)
+        au = next((s for s in ffprobe(a.video)["streams"] if s["codec_type"] == "audio"), None)
+        audio_ok = au is None or (au["codec_name"] == "aac" and int(au.get("sample_rate", 0)) <= 48000)
+        audio = ["-c:a", "copy"] if audio_ok else ["-c:a", "aac", "-ar", "48000", "-b:a", "192k"]
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", a.video, "-c:v", "copy", *audio,
                         "-movflags", "+faststart", destino], check=True)
     mb = Path(destino).stat().st_size / 1e6
     if mb > 95:
