@@ -10,6 +10,13 @@ Solo deben entrar vídeos finales, portadas y descripciones. Nunca tokens ni con
 3. GitHub Actions ejecuta `publicar.py` cada 15 minutos (puede retrasarse algo) y publica lo que ya toque.
 4. Al publicar, la ficha pasa a `"estado": "publicado"` con el enlace y se borra el vídeo del repositorio.
 
+## Carruseles e historias
+
+- Carrusel: `encolar.py --tipo carrusel --archivos s1.png s2.png ...` (2 a 20 imágenes o vídeos, 4:5 a 1,91:1).
+- Historias: `encolar.py --tipo historia --archivos s1.png s2.png ...` (se publican seguidas en ese orden;
+  9:16; vídeos de 3 a 60 s; sin stickers, enlaces ni música: todo tiene que ir dentro de la imagen).
+- Las imágenes se convierten a JPG (lo único que admite Instagram). El modo prueba solo existe para reels.
+
 ## Las dos cuentas a la vez
 
 `encolar.py --cuenta ambas` crea dos entradas: `jesuslopezfitness` con el vídeo original y `jesuss.fitness`
