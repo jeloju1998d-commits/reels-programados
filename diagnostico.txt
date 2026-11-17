@@ -1,47 +1,40 @@
-=== DIAGNÓSTICO 3 (no publica nada): comparación de cuentas ===
-
-## @jesuslopezfitness (página vinculada «Jesuss.fitness», id 17841440158222791)
-  username: jesuslopezfitness
-  name: Jesús López | Pérdida de Grasa | Ganancia Muscular | Fuerza
-  followers_count: 388
-  follows_count: 16
-  media_count: 37
-  biography: (sí, 112 caracteres)
-  website: None
-  profile_picture_url: (sí, 400 caracteres)
-  ig_id: 40182330607
-  account_type: — ((#100) Tried accessing nonexisting field (account_type))
-  is_published: True
-  has_profile_pic: True
-  shopping_product_tag_eligibility: — ((#10) Application does not have permission for this action)
-  is_eligible_for_trial_reels: — ((#100) Tried accessing nonexisting field (is_eligible_for_trial_reels))
-  trial_reels_eligibility: — ((#100) Tried accessing nonexisting field (trial_reels_eligibility))
-  can_create_trial_reels: — ((#100) Tried accessing nonexisting field (can_create_trial_reels))
-  recommendation_eligibility: — ((#100) Tried accessing nonexisting field (recommendation_eligibility))
-  is_private: — ((#100) Tried accessing nonexisting field (is_private))
-  legacy_instagram_user_id: 28360394376912598
-  cupo de publicación: {"data":[{"quota_usage":2,"config":{"quota_total":100,"quota_duration":86400}}]}
-  token unificado ve la cuenta: sí
-
-## @jesuss.fitness (página vinculada «Farmathlete», id 17841461291424084)
-  username: jesuss.fitness
-  name: Jesús López | Entrenador Online y Farmacéutico
-  followers_count: 3156
-  follows_count: 130
-  media_count: 165
-  biography: (sí, 115 caracteres)
-  website: None
-  profile_picture_url: (sí, 400 caracteres)
-  ig_id: 61312675047
-  account_type: — ((#100) Tried accessing nonexisting field (account_type))
-  is_published: True
-  has_profile_pic: True
-  shopping_product_tag_eligibility: — ((#10) Application does not have permission for this action)
-  is_eligible_for_trial_reels: — ((#100) Tried accessing nonexisting field (is_eligible_for_trial_reels))
-  trial_reels_eligibility: — ((#100) Tried accessing nonexisting field (trial_reels_eligibility))
-  can_create_trial_reels: — ((#100) Tried accessing nonexisting field (can_create_trial_reels))
-  recommendation_eligibility: — ((#100) Tried accessing nonexisting field (recommendation_eligibility))
-  is_private: — ((#100) Tried accessing nonexisting field (is_private))
-  legacy_instagram_user_id: 6588492327874433
-  cupo de publicación: {"data":[{"quota_usage":2,"config":{"quota_total":100,"quota_duration":86400}}]}
-  token unificado ve la cuenta: sí
+=== DIAGNÓSTICO 4 (no publica nada): ensayo de carruseles e historias ===
+empiezo 2026-12-30_1000_jesuslopezfitness_ensayo-historias (10:16:16 UTC)
+  historia 01.jpg lista (18105003710338608); no se publica
+    02.jpg: IN_PROGRESS In Progress: Media is still being processed.
+  historia 02.jpg lista (18105003740338608); no se publica
+    03.jpg: IN_PROGRESS In Progress: Media is still being processed.
+  historia 03.jpg lista (18105003767338608); no se publica
+  historia 04.jpg lista (18105003806338608); no se publica
+ENSAYO 2026-12-30_1000_jesuslopezfitness_ensayo-historias: OK, Instagram acepta 4 historias; no publicado
+empiezo 2026-12-30_1300_jesuslopezfitness_ensayo-carrusel (10:16:45 UTC)
+  diapositiva 01.jpg lista (18105003824338608)
+  diapositiva 02.jpg lista (18105003860338608)
+  diapositiva 03.jpg lista (18105003878338608)
+  diapositiva 04.jpg lista (18105003899338608)
+  diapositiva 05.jpg lista (18105003926338608)
+  diapositiva 06.jpg lista (18105003962338608)
+  diapositiva 07.jpg lista (18105003992338608)
+  diapositiva 08.jpg lista (18105004013338608)
+    el carrusel: IN_PROGRESS In Progress: Media is still being processed.
+ENSAYO 2026-12-30_1300_jesuslopezfitness_ensayo-carrusel: OK, Instagram acepta 8 diapositivas; no publicado
+empiezo 2026-12-31_1000_jesuss-fitness_ensayo-historias (10:17:37 UTC)
+    01.jpg: IN_PROGRESS In Progress: Media is still being processed.
+  historia 01.jpg lista (18003098907043048); no se publica
+    02.jpg: IN_PROGRESS In Progress: Media is still being processed.
+  historia 02.jpg lista (18003098928043048); no se publica
+    03.jpg: IN_PROGRESS In Progress: Media is still being processed.
+  historia 03.jpg lista (18003098949043048); no se publica
+    04.jpg: IN_PROGRESS In Progress: Media is still being processed.
+  historia 04.jpg lista (18003098967043048); no se publica
+ENSAYO 2026-12-31_1000_jesuss-fitness_ensayo-historias: OK, Instagram acepta 4 historias; no publicado
+empiezo 2026-12-31_1300_jesuss-fitness_ensayo-carrusel (10:18:09 UTC)
+  diapositiva 01.jpg lista (18003098985043048)
+  diapositiva 02.jpg lista (18003099009043048)
+  diapositiva 03.jpg lista (18003099027043048)
+  diapositiva 04.jpg lista (18003099054043048)
+  diapositiva 05.jpg lista (18003099075043048)
+  diapositiva 06.jpg lista (18003099096043048)
+  diapositiva 07.jpg lista (18003099117043048)
+  diapositiva 08.jpg lista (18003099135043048)
+ENSAYO 2026-12-31_1300_jesuss-fitness_ensayo-carrusel: OK, Instagram acepta 8 diapositivas; no publicado
