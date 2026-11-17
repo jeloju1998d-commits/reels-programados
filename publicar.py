@@ -92,7 +92,111 @@ def sigue_pendiente(carpeta):
         return False
 
 
-def publicar(carpeta, datos, ensayo=False):
+def url_publica(carpeta, nombre):
+    """Enlace público al archivo en GitHub, fijado a la versión que se está ejecutando
+    (la de main en este momento, que es la que tiene los archivos de la cola)."""
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    if not repo:
+        return ""
+    try:
+        sha = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True,
+                             check=True, timeout=30).stdout.strip()
+    except Exception:
+        sha = os.environ.get("GITHUB_SHA", "")
+    ruta = urllib.parse.quote(f"cola/{carpeta.name}/{nombre}")
+    return f"https://raw.githubusercontent.com/{repo}/{sha}/{ruta}"
+
+
+def esperar(contenedor, token, que="el archivo"):
+    for _ in range(40):  # hasta ~13 minutos
+        estado = llamar(f"{API}/{contenedor}?fields=status_code,status&access_token={token}")
+        if estado["status_code"] == "FINISHED":
+            return
+        if estado["status_code"] in ("ERROR", "EXPIRED"):
+            raise RuntimeError(f"Instagram rechazó {que}: {estado}")
+        time.sleep(20)
+    raise RuntimeError(f"Instagram no terminó de procesar {que} a tiempo")
+
+
+def publicar_contenedor(ig_id, token, contenedor, carpeta, descripcion):
+    """Los frenos de siempre y, si todo está bien, publicar. Devuelve (media_id, enlace)."""
+    if not sigue_pendiente(carpeta):
+        raise Pausado()
+    ya = ya_publicado(ig_id, token, descripcion)
+    if ya:
+        raise YaPublicado(ya)
+    media = llamar(f"{API}/{ig_id}/media_publish",
+                   datos={"creation_id": contenedor, "access_token": token})["id"]
+    try:
+        enlace = llamar(f"{API}/{media}?fields=permalink&access_token={token}").get("permalink", "")
+    except RuntimeError:
+        enlace = ""
+    return media, enlace
+
+
+def publicar(carpeta, datos, ensayo=False, ficha=None):
+    tipo = datos.get("tipo", "reel")
+    if tipo == "carrusel":
+        return publicar_carrusel(carpeta, datos, ensayo)
+    if tipo == "historia":
+        return publicar_historias(carpeta, datos, ensayo, ficha)
+    return publicar_reel(carpeta, datos, ensayo)
+
+
+def publicar_carrusel(carpeta, datos, ensayo=False):
+    ig_id, token = conexion(datos["cuenta"])
+    hijos = []
+    for nombre in datos["archivos"]:
+        url = url_publica(carpeta, nombre)
+        if not url:
+            raise RuntimeError("Sin enlace público a los archivos (solo funciona en GitHub)")
+        campos = {"is_carousel_item": True, "access_token": token}
+        if nombre.endswith(".mp4"):
+            campos.update(media_type="VIDEO", video_url=url)
+        else:
+            campos["image_url"] = url
+        hijo = llamar_json(f"{API}/{ig_id}/media", campos)["id"]
+        esperar(hijo, token, nombre)
+        hijos.append(hijo)
+        print(f"  diapositiva {nombre} lista ({hijo})")
+    padre = llamar_json(f"{API}/{ig_id}/media", {
+        "media_type": "CAROUSEL", "children": ",".join(hijos),
+        "caption": datos.get("descripcion", ""), "access_token": token})["id"]
+    esperar(padre, token, "el carrusel")
+    if ensayo:
+        return padre, f"{len(hijos)} diapositivas"
+    return publicar_contenedor(ig_id, token, padre, carpeta, datos.get("descripcion", ""))
+
+
+def publicar_historias(carpeta, datos, ensayo=False, ficha=None):
+    """Una historia por archivo, en orden. Va apuntando cada una al publicarla: si algo falla
+    a mitad, las ya publicadas no se repiten."""
+    ig_id, token = conexion(datos["cuenta"])
+    hechas = {h["archivo"] for h in datos.get("publicadas", [])}
+    for nombre in datos["archivos"]:
+        if nombre in hechas:
+            continue
+        url = url_publica(carpeta, nombre)
+        if not url:
+            raise RuntimeError("Sin enlace público a los archivos (solo funciona en GitHub)")
+        campos = {"media_type": "STORIES", "access_token": token}
+        campos["video_url" if nombre.endswith(".mp4") else "image_url"] = url
+        cont = llamar_json(f"{API}/{ig_id}/media", campos)["id"]
+        esperar(cont, token, nombre)
+        if ensayo:
+            print(f"  historia {nombre} lista ({cont}); no se publica")
+            continue
+        media, enlace = publicar_contenedor(ig_id, token, cont, carpeta, "")
+        datos.setdefault("publicadas", []).append({"archivo": nombre, "media_id": media})
+        if ficha:
+            ficha.write_text(json.dumps(datos, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"  historia {nombre} publicada ({media})")
+    if ensayo:
+        return "", f"{len(datos['archivos'])} historias"
+    return datos["publicadas"][-1]["media_id"] if datos.get("publicadas") else "", ""
+
+
+def publicar_reel(carpeta, datos, ensayo=False):
     video = carpeta / "video.mp4"
     if not video.exists():
         raise RuntimeError("No está video.mp4")
@@ -108,10 +212,8 @@ def publicar(carpeta, datos, ensayo=False):
     if datos.get("prueba", True):
         campos["trial_params"] = {"graduation_strategy": datos.get("graduacion", "MANUAL")}
     portada = carpeta / "portada.jpg"
-    repo, sha = os.environ.get("GITHUB_REPOSITORY"), os.environ.get("GITHUB_SHA")
-    if portada.exists() and repo and sha:
-        ruta = urllib.parse.quote(f"cola/{carpeta.name}/portada.jpg")
-        campos["cover_url"] = f"https://raw.githubusercontent.com/{repo}/{sha}/{ruta}"
+    if portada.exists() and url_publica(carpeta, "portada.jpg"):
+        campos["cover_url"] = url_publica(carpeta, "portada.jpg")
 
     contenedor = llamar_json(f"{API}/{ig_id}/media", campos)["id"]
     print(f"  contenedor {contenedor}; subiendo {video.stat().st_size / 1e6:.1f} MB")
@@ -125,39 +227,19 @@ def publicar(carpeta, datos, ensayo=False):
         print("  subida directa correcta")
     except RuntimeError as e:
         # Vía alternativa: que Instagram descargue el vídeo del repositorio público
-        if not (repo and sha):
+        url = url_publica(carpeta, "video.mp4")
+        if not url:
             raise
         print(f"  la subida directa falló ({e}); pruebo por URL")
-        ruta = urllib.parse.quote(f"cola/{carpeta.name}/video.mp4")
         campos.pop("upload_type")
-        campos["video_url"] = f"https://raw.githubusercontent.com/{repo}/{sha}/{ruta}"
+        campos["video_url"] = url
         contenedor = llamar_json(f"{API}/{ig_id}/media", campos)["id"]
         print(f"  contenedor {contenedor} por URL")
 
-    for _ in range(40):  # hasta ~13 minutos
-        estado = llamar(f"{API}/{contenedor}?fields=status_code,status&access_token={token}")
-        if estado["status_code"] == "FINISHED":
-            break
-        if estado["status_code"] in ("ERROR", "EXPIRED"):
-            raise RuntimeError(f"Instagram rechazó el vídeo: {estado}")
-        time.sleep(20)
-    else:
-        raise RuntimeError("Instagram no terminó de procesar el vídeo a tiempo")
+    esperar(contenedor, token, "el vídeo")
     if ensayo:  # el contenedor sin publicar caduca solo a las 24 h
         return contenedor, "por URL" if "video_url" in campos else "subida directa"
-    if not sigue_pendiente(carpeta):
-        raise Pausado()
-    ya = ya_publicado(ig_id, token, datos.get("descripcion", ""))
-    if ya:
-        raise YaPublicado(ya)
-
-    media = llamar(f"{API}/{ig_id}/media_publish",
-                   datos={"creation_id": contenedor, "access_token": token})["id"]
-    try:
-        enlace = llamar(f"{API}/{media}?fields=permalink&access_token={token}").get("permalink", "")
-    except RuntimeError:
-        enlace = ""
-    return media, enlace
+    return publicar_contenedor(ig_id, token, contenedor, carpeta, datos.get("descripcion", ""))
 
 
 class Pausado(Exception):
@@ -231,18 +313,21 @@ def main():
             print(f"{carpeta.name}: programado para {datos['fecha']}, aún no toca")
             continue
 
-        print(f"{carpeta.name}: toca publicar en @{datos['cuenta']}"
-              f" ({'prueba' if datos.get('prueba', True) else 'normal'})")
+        tipo = datos.get("tipo", "reel")
+        modo = ("prueba" if datos.get("prueba", True) else "normal") if tipo == "reel" else tipo
+        print(f"{carpeta.name}: toca publicar en @{datos['cuenta']} ({modo})")
         if SIMULAR:
             print("  SIMULACIÓN: no se publica")
             continue
         try:
             if ahora - cuando > MAX_RETRASO:
                 raise RuntimeError("Han pasado más de 12 h desde la hora programada; no se publica")
-            media, enlace = publicar(carpeta, datos)
+            media, enlace = publicar(carpeta, datos, ficha=ficha)
             datos.update(estado="publicado", media_id=media, enlace=enlace,
                          publicado_el=datetime.now(ZONA).strftime("%Y-%m-%d %H:%M"))
-            (carpeta / "video.mp4").unlink()  # ya no hace falta en el repositorio
+            for f in carpeta.iterdir():  # los archivos ya no hacen falta en el repositorio
+                if f.suffix.lower() in (".mp4", ".jpg"):
+                    f.unlink()
             print(f"  publicado: {enlace or media}")
         except Pausado:
             print("  ya no está pendiente en GitHub (pausado o publicado): no se publica")

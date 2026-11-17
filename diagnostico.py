@@ -81,6 +81,25 @@ def variantes(ig_id, token, host=API):
 
 
 def main():
+    """Cuarta ronda: ensayo de carruseles e historias de la cola marcados como "ensayo".
+    Usa publicar.py con ensayo=True: crea los borradores y para ANTES de media_publish."""
+    import sys
+    sys.path.insert(0, str(Path(__file__).parent))
+    import publicar as pub
+    log("=== DIAGNÓSTICO 4 (no publica nada): ensayo de carruseles e historias ===")
+    for ficha in sorted((Path(__file__).parent / "cola").glob("*/publicacion.json")):
+        datos = json.loads(ficha.read_text(encoding="utf-8"))
+        if datos.get("estado") != "ensayo":
+            continue
+        try:
+            _, detalle = pub.publicar(ficha.parent, datos, ensayo=True)
+            log(f"ENSAYO {ficha.parent.name}: OK, Instagram acepta {detalle}; no publicado")
+        except Exception as e:
+            log(f"ENSAYO {ficha.parent.name}: ERROR {str(e)[:600]}")
+    SALIDA.write_text("\n".join(lineas) + "\n", encoding="utf-8")
+
+
+def main_ronda3():
     """Tercera ronda: comparar todo lo que la API dice de las dos cuentas."""
     log("=== DIAGNÓSTICO 3 (no publica nada): comparación de cuentas ===")
     fb = os.environ.get("IG_FB_TOKEN", "").strip()
