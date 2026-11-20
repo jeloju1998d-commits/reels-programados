@@ -87,6 +87,18 @@ def datetime_now():
 
 
 def main():
+    """Sexta ronda (20/11): prueba comprobar_modo() de publicar.py con reels ya publicados. Solo lee."""
+    import sys
+    sys.path.insert(0, str(Path(__file__).parent))
+    import publicar as pub
+    pub.print = lambda *a, **k: log(" ".join(map(str, a)))
+    log("=== DIAGNÓSTICO 6 (solo lee): comprobar_modo con reels ya publicados ===")
+    for nombre, media in (("press banca (debería ser prueba)", "18101418638408607"),
+                          ("keto (debería ser normal)", "18028632284869224")):
+        log(f"{nombre}: {pub.comprobar_modo('jesuss.fitness', media) or 'sin comprobar'}")
+
+
+def main_ronda5():
     """Quinta ronda (20/11): solo LEE. ¿Qué reels publicados de jesuss.fitness ve la API
     como normales? Los de prueba no salían en /media el 17/11."""
     log("=== DIAGNÓSTICO 5 (solo lee, no publica nada): reels publicados de jesuss.fitness ===")

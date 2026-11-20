@@ -300,6 +300,23 @@ def comprobar():
     sys.exit(0)
 
 
+def comprobar_modo(cuenta, media):
+    """Tras publicar un reel, mira si Instagram respetó el modo prueba. Los reels de prueba
+    vuelven con is_shared_to_feed=false; el que salió normal el 20/11 (keto), con true.
+    Devuelve "prueba", "normal" o "" si no se pudo leer."""
+    for pausa in (0, 10, 30):
+        time.sleep(pausa)
+        try:
+            _, token = conexion(cuenta)
+            r = llamar(f"{API}/{media}?fields=is_shared_to_feed&access_token={token}")
+        except Exception as e:
+            print(f"  no pude comprobar el modo ({str(e)[:200]})")
+            continue
+        if "is_shared_to_feed" in r:
+            return "normal" if r["is_shared_to_feed"] else "prueba"
+    return ""
+
+
 def main():
     if os.environ.get("COMPROBAR", "") in ("1", "true"):
         comprobar()
@@ -331,6 +348,15 @@ def main():
                 if f.suffix.lower() in (".mp4", ".jpg"):
                     f.unlink()
             print(f"  publicado: {enlace or media}")
+            if tipo == "reel" and datos.get("prueba", True):
+                real = comprobar_modo(datos["cuenta"], media)
+                datos["modo_real"] = real or "sin comprobar"
+                if real == "normal":
+                    fallos += 1  # el flujo sale en rojo y GitHub avisa por correo
+                    datos["aviso"] = "Instagram lo publicó en NORMAL aunque se pidió modo prueba"
+                    print("  AVISO: Instagram ignoró el modo prueba; el reel ha salido en normal")
+                else:
+                    print(f"  modo comprobado: {datos['modo_real']}")
         except Pausado:
             print("  ya no está pendiente en GitHub (pausado o publicado): no se publica")
             continue
