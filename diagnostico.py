@@ -105,13 +105,11 @@ def main():
         with urllib.request.urlopen(url, timeout=120) as r:
             lista = json.loads(r.read().decode())["data"]
     ids_lista = {m["id"] for m in lista}
-    log("
-## Últimas publicaciones en /media")
+    log("\n## Últimas publicaciones en /media")
     for m in lista[:20]:
         log(f"  {m['timestamp']} {m.get('media_product_type')} {m['id']} {m.get('permalink','')} "
             f"{(m.get('caption') or '')[:40]!r}")
-    log("
-## Reels de la cola")
+    log("\n## Reels de la cola")
     for ficha in sorted((Path(__file__).parent / "cola").glob("*jesuss-fitness*/publicacion.json")):
         d = json.loads(ficha.read_text(encoding="utf-8"))
         if d.get("estado") != "publicado" or d.get("tipo", "reel") != "reel":
@@ -123,9 +121,7 @@ def main():
         log(f"{ficha.parent.name}: {'EN /media' if mid in ids_lista else 'NO en /media'}")
         log(f"  ficha: {'OK ' if ok else 'ERR'} {t[:250]}")
         log(f"  insights: {'OK ' if ok2 else 'ERR'} {t2[:250]}")
-    SALIDA.write_text("
-".join(lineas) + "
-", encoding="utf-8")
+    SALIDA.write_text("\n".join(lineas) + "\n", encoding="utf-8")
 
 
 def main_ronda4():
