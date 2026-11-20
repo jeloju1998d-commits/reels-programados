@@ -1,40 +1,43 @@
-=== DIAGNÓSTICO 4 (no publica nada): ensayo de carruseles e historias ===
-empiezo 2026-12-30_1000_jesuslopezfitness_ensayo-historias (10:16:16 UTC)
-  historia 01.jpg lista (18105003710338608); no se publica
-    02.jpg: IN_PROGRESS In Progress: Media is still being processed.
-  historia 02.jpg lista (18105003740338608); no se publica
-    03.jpg: IN_PROGRESS In Progress: Media is still being processed.
-  historia 03.jpg lista (18105003767338608); no se publica
-  historia 04.jpg lista (18105003806338608); no se publica
-ENSAYO 2026-12-30_1000_jesuslopezfitness_ensayo-historias: OK, Instagram acepta 4 historias; no publicado
-empiezo 2026-12-30_1300_jesuslopezfitness_ensayo-carrusel (10:16:45 UTC)
-  diapositiva 01.jpg lista (18105003824338608)
-  diapositiva 02.jpg lista (18105003860338608)
-  diapositiva 03.jpg lista (18105003878338608)
-  diapositiva 04.jpg lista (18105003899338608)
-  diapositiva 05.jpg lista (18105003926338608)
-  diapositiva 06.jpg lista (18105003962338608)
-  diapositiva 07.jpg lista (18105003992338608)
-  diapositiva 08.jpg lista (18105004013338608)
-    el carrusel: IN_PROGRESS In Progress: Media is still being processed.
-ENSAYO 2026-12-30_1300_jesuslopezfitness_ensayo-carrusel: OK, Instagram acepta 8 diapositivas; no publicado
-empiezo 2026-12-31_1000_jesuss-fitness_ensayo-historias (10:17:37 UTC)
-    01.jpg: IN_PROGRESS In Progress: Media is still being processed.
-  historia 01.jpg lista (18003098907043048); no se publica
-    02.jpg: IN_PROGRESS In Progress: Media is still being processed.
-  historia 02.jpg lista (18003098928043048); no se publica
-    03.jpg: IN_PROGRESS In Progress: Media is still being processed.
-  historia 03.jpg lista (18003098949043048); no se publica
-    04.jpg: IN_PROGRESS In Progress: Media is still being processed.
-  historia 04.jpg lista (18003098967043048); no se publica
-ENSAYO 2026-12-31_1000_jesuss-fitness_ensayo-historias: OK, Instagram acepta 4 historias; no publicado
-empiezo 2026-12-31_1300_jesuss-fitness_ensayo-carrusel (10:18:09 UTC)
-  diapositiva 01.jpg lista (18003098985043048)
-  diapositiva 02.jpg lista (18003099009043048)
-  diapositiva 03.jpg lista (18003099027043048)
-  diapositiva 04.jpg lista (18003099054043048)
-  diapositiva 05.jpg lista (18003099075043048)
-  diapositiva 06.jpg lista (18003099096043048)
-  diapositiva 07.jpg lista (18003099117043048)
-  diapositiva 08.jpg lista (18003099135043048)
-ENSAYO 2026-12-31_1300_jesuss-fitness_ensayo-carrusel: OK, Instagram acepta 8 diapositivas; no publicado
+=== DIAGNÓSTICO 5 (solo lee, no publica nada): reels publicados de jesuss.fitness ===
+
+## Últimas publicaciones en /media
+  2026-11-20T17:53:50+0000 REELS 18028632284869224 https://www.instagram.com/reel/Df-PLpXjves/ ''
+  2026-11-20T12:46:08+0000 REELS 18101418638408607 https://www.instagram.com/reel/Df9r7gXicle/ ''
+  2026-11-19T17:54:48+0000 REELS 18099062981481502 https://www.instagram.com/reel/Df7qdVlDHP0/ ''
+  2026-11-19T12:14:51+0000 REELS 18079430774755195 https://www.instagram.com/reel/Df7DhOKgF6J/ ''
+  2026-11-18T09:55:06+0000 REELS 18136998622825009 https://www.instagram.com/reel/Df4O7BshAl9/ ''
+  2026-11-17T10:10:02+0000 REELS 17995051239058092 https://www.instagram.com/reel/Dfwr8RGBK14/ ''
+  2026-11-17T08:28:11+0000 REELS 18416395645089248 https://www.instagram.com/reel/Df1gA9JDwca/ ''
+  2026-11-16T10:55:05+0000 REELS 17956609935307743 https://www.instagram.com/reel/DfzMNUph4YH/ ''
+  2026-11-15T11:10:04+0000 REELS 18029957099873611 https://www.instagram.com/reel/DfwpF3Xhard/ ''
+  2026-11-14T10:25:26+0000 REELS 18142802113722187 https://www.instagram.com/reel/Dft_NzZh6x9/ ''
+  2026-11-12T11:19:18+0000 REELS 18089385719319061 https://www.instagram.com/reel/Dfo7mabuy9o/ ''
+  2026-11-08T18:52:06+0000 REELS 18118853978328678 https://www.instagram.com/reel/DffcTm2uS9d/ ''
+  2026-11-05T17:40:33+0000 REELS 17942756328383648 https://www.instagram.com/reel/DfXlFMiuWQ8/ ''
+  2026-11-04T18:20:08+0000 REELS 18117985057824841 https://www.instagram.com/reel/DfVFiyVBYI_/ ''
+  2026-11-04T16:55:07+0000 REELS 18097442453230695 https://www.instagram.com/reel/DfU712AhpLv/ ''
+  2026-11-04T10:20:06+0000 REELS 18163544743435414 https://www.instagram.com/reel/DfUOolPBcUd/ ''
+  2026-11-03T19:35:05+0000 REELS 18119999083954452 https://www.instagram.com/reel/DfSpUCBBAdm/ ''
+  2026-11-03T18:09:20+0000 REELS 18131657164697507 https://www.instagram.com/reel/DfSe5l-uHkl/ ''
+  2026-11-03T16:50:03+0000 REELS 18643685242009139 https://www.instagram.com/reel/DfSWZuGBAqY/ ''
+  2026-11-02T16:45:04+0000 REELS 18641442631003188 https://www.instagram.com/reel/DfPxF5DBRLS/ ''
+
+## Reels de la cola
+2026-11-17_0914_jesuss-fitness_reloj-y-calorias: EN /media
+  ficha: OK  {"id":"18416395645089248","comments_count":0,"is_shared_to_feed":false,"like_count":3,"media_product_type":"REELS","permalink":"https://www.instagram.com/reel/Df1gA9JDwca/","timestamp":"2026-11-17T08:28:11+0000"}
+  insights: ERR {"error":{"message":"(#10) Application does not have permission for this action","code":10,"type":"OAuthException","fbtrace_id":"Alpn7vZTJ07BsnrEqzMU_ck"}}
+2026-11-17_0954_jesuss-fitness_chatgpt-te-da-la-razon: NO en /media
+  ficha: ERR {"error":{"message":"Unsupported get request. Object with ID '18668233627004069' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.c
+  insights: ERR {"error":{"message":"Unsupported get request. Object with ID '18668233627004069' does not exist, cannot be loaded due to missing permissions, or does not support this operation. Please read the Graph API documentation at https://developers.facebook.c
+2026-11-19_1245_jesuss-fitness_p-sinefrina: EN /media
+  ficha: OK  {"id":"18079430774755195","comments_count":0,"is_shared_to_feed":false,"like_count":0,"media_product_type":"REELS","permalink":"https://www.instagram.com/reel/Df7DhOKgF6J/","timestamp":"2026-11-19T12:14:51+0000"}
+  insights: ERR {"error":{"message":"(#10) Application does not have permission for this action","code":10,"type":"OAuthException","fbtrace_id":"AaHLVCM3wtla_TFjy2i1LA8"}}
+2026-11-19_1800_jesuss-fitness_caminar-mas-que-fuerza: EN /media
+  ficha: OK  {"id":"18099062981481502","comments_count":0,"is_shared_to_feed":false,"like_count":0,"media_product_type":"REELS","permalink":"https://www.instagram.com/reel/Df7qdVlDHP0/","timestamp":"2026-11-19T17:54:48+0000"}
+  insights: ERR {"error":{"message":"(#10) Application does not have permission for this action","code":10,"type":"OAuthException","fbtrace_id":"AnF7SPg_2uvfv1hphGFEXQc"}}
+2026-11-20_1245_jesuss-fitness_press-banca-rapido: EN /media
+  ficha: OK  {"id":"18101418638408607","comments_count":0,"is_shared_to_feed":false,"like_count":3,"media_product_type":"REELS","permalink":"https://www.instagram.com/reel/Df9r7gXicle/","timestamp":"2026-11-20T12:46:08+0000"}
+  insights: ERR {"error":{"message":"(#10) Application does not have permission for this action","code":10,"type":"OAuthException","fbtrace_id":"AlBwXztsUi_fqdJV_xy0xif"}}
+2026-11-20_1800_jesuss-fitness_keto-no-quema-mas-grasa: EN /media
+  ficha: OK  {"id":"18028632284869224","comments_count":0,"is_shared_to_feed":true,"like_count":0,"media_product_type":"REELS","permalink":"https://www.instagram.com/reel/Df-PLpXjves/","timestamp":"2026-11-20T17:53:50+0000"}
+  insights: ERR {"error":{"message":"(#10) Application does not have permission for this action","code":10,"type":"OAuthException","fbtrace_id":"A6AaliUuEdI60RWPmoosERt"}}
