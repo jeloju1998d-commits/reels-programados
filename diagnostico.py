@@ -87,6 +87,48 @@ def datetime_now():
 
 
 def main():
+    """Quinta ronda (20/11): solo LEE. ¿Qué reels publicados de jesuss.fitness ve la API
+    como normales? Los de prueba no salían en /media el 17/11."""
+    log("=== DIAGNÓSTICO 5 (solo lee, no publica nada): reels publicados de jesuss.fitness ===")
+    fb = os.environ.get("IG_FB_TOKEN", "").strip()
+    cuentas = cuentas_facebook_completo(fb)
+    ig_id, tok, _ = cuentas["jesuss.fitness"]
+    sec = (fb, tok)
+    ok, t = peticion(f"{API}/{ig_id}/media?fields=id,timestamp,media_product_type,permalink,caption"
+                     f"&limit=30&access_token={tok}", tokens=sec)
+    try:
+        lista = json.loads(t)["data"] if ok else []
+    except Exception:
+        lista = []
+    if not ok or not lista:
+        url = f"{API}/{ig_id}/media?fields=id,timestamp,media_product_type,permalink&limit=30&access_token={tok}"
+        with urllib.request.urlopen(url, timeout=120) as r:
+            lista = json.loads(r.read().decode())["data"]
+    ids_lista = {m["id"] for m in lista}
+    log("
+## Últimas publicaciones en /media")
+    for m in lista[:20]:
+        log(f"  {m['timestamp']} {m.get('media_product_type')} {m['id']} {m.get('permalink','')} "
+            f"{(m.get('caption') or '')[:40]!r}")
+    log("
+## Reels de la cola")
+    for ficha in sorted((Path(__file__).parent / "cola").glob("*jesuss-fitness*/publicacion.json")):
+        d = json.loads(ficha.read_text(encoding="utf-8"))
+        if d.get("estado") != "publicado" or d.get("tipo", "reel") != "reel":
+            continue
+        mid = d["media_id"]
+        ok, t = peticion(f"{API}/{mid}?fields=id,timestamp,media_product_type,permalink,like_count,"
+                         f"comments_count,is_shared_to_feed&access_token={tok}", tokens=sec)
+        ok2, t2 = peticion(f"{API}/{mid}/insights?metric=reach,views&access_token={tok}", tokens=sec)
+        log(f"{ficha.parent.name}: {'EN /media' if mid in ids_lista else 'NO en /media'}")
+        log(f"  ficha: {'OK ' if ok else 'ERR'} {t[:250]}")
+        log(f"  insights: {'OK ' if ok2 else 'ERR'} {t2[:250]}")
+    SALIDA.write_text("
+".join(lineas) + "
+", encoding="utf-8")
+
+
+def main_ronda4():
     """Cuarta ronda: ensayo de carruseles e historias de la cola marcados como "ensayo".
     Usa publicar.py con ensayo=True: crea los borradores y para ANTES de media_publish."""
     import sys
