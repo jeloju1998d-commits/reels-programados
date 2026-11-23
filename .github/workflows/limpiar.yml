@@ -1,0 +1,40 @@
+name: Limpiar historial
+
+# Cada lunes de madrugada deja el repositorio con una sola versión (la actual):
+# borra del historial los vídeos ya publicados. La cola y los registros no cambian.
+on:
+  schedule:
+    - cron: "30 3 * * 1"
+  workflow_dispatch:
+  # Cambiar limpiar.txt y subirlo lanza una limpieza en el momento
+  push:
+    paths:
+      - "limpiar.txt"
+
+permissions:
+  contents: write
+
+# Mismo grupo que la publicación: nunca coinciden
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  limpiar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+      - name: Rehacer el historial con solo la versión actual
+        run: |
+          git config user.name "publicador"
+          git config user.email "publicador@users.noreply.github.com"
+          antes=$(git rev-parse HEAD)
+          git checkout --orphan limpio
+          git add -A
+          git commit -q -m "Historial limpio ($(date -u +%Y-%m-%d))"
+          # Solo si nadie ha subido nada mientras tanto
+          git push --force-with-lease=main:$antes origin limpio:main

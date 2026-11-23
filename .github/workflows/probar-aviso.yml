@@ -1,0 +1,19 @@
+name: Probar aviso de fallo
+
+# No publica nada: termina en rojo a propósito para comprobar que llega el correo de fallo de GitHub.
+# Se lanza cambiando probar-aviso.txt y subiéndolo.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "probar-aviso.txt"
+
+jobs:
+  probar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Fallo de prueba (no publica nada)
+        run: |
+          echo "::error title=Prueba de aviso::Fallo de prueba: si te llega este correo, los avisos de publicación funcionan. No se ha publicado nada."
+          exit 1

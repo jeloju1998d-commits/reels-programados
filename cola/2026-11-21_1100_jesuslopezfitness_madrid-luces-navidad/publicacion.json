@@ -1,0 +1,18 @@
+{
+  "tipo": "historia",
+  "cuenta": "jesuslopezfitness",
+  "fecha": "2026-11-21 11:00",
+  "archivos": [
+    "01.jpg",
+    "02.jpg",
+    "03.jpg"
+  ],
+  "estado": "error",
+  "publicadas": [
+    {
+      "archivo": "01.jpg",
+      "media_id": "18116356064145893"
+    }
+  ],
+  "error": "Instagram respondió 400: {\"error\":{\"message\":\"The requested resource does not exist\",\"code\":24,\"type\":\"OAuthException\",\"error_subcode\":2207006,\"is_transient\":false,\"error_user_msg\":\"No se encuentra el contenido multimedia con el identificador 18 105 707 732 338 608.\",\"error_user_title\":\"No se ha encontrado el contenido multimedia\",\"fbtrace_id\":\"AKQx5KQATfNN7fby8X7H-Ju\"}}"
+}

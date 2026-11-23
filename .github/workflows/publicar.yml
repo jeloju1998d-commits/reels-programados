@@ -1,0 +1,52 @@
+name: Publicar reels programados
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  # Al subir cambios a la cola, publica en el momento lo que ya toque
+  push:
+    paths:
+      - "cola/**"
+      - "ahora.txt"
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Solo simular (no publica nada)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      # Siempre la cola más reciente (no la del momento en que se creó la ejecución)
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Publicar lo que toque
+        env:
+          IG_FB_TOKEN: ${{ secrets.IG_FB_TOKEN }}
+          SIMULAR: ${{ inputs.simular && '1' || '' }}
+        run: python publicar.py
+      - name: Guardar el estado de la cola
+        if: always()
+        run: |
+          git config user.name "publicador"
+          git config user.email "publicador@users.noreply.github.com"
+          git add -A cola
+          [ -f avisos.txt ] && git add avisos.txt
+          git diff --cached --quiet && exit 0
+          git commit -m "Estado de la cola"
+          git pull --rebase
+          git push

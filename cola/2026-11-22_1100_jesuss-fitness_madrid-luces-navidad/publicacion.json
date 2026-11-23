@@ -1,0 +1,28 @@
+{
+  "tipo": "historia",
+  "cuenta": "jesuss.fitness",
+  "fecha": "2026-11-22 11:00",
+  "archivos": [
+    "01.jpg",
+    "02.jpg",
+    "03.jpg"
+  ],
+  "estado": "publicado",
+  "publicadas": [
+    {
+      "archivo": "01.jpg",
+      "media_id": "18147419551608565"
+    },
+    {
+      "archivo": "02.jpg",
+      "media_id": "17967529491236763"
+    },
+    {
+      "archivo": "03.jpg",
+      "media_id": "17960588682289642"
+    }
+  ],
+  "media_id": "17960588682289642",
+  "enlace": "",
+  "publicado_el": "2026-11-22 11:34"
+}

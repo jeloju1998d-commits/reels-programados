@@ -1,0 +1,38 @@
+name: Diagnostico modo prueba
+
+# No publica nada: solo crea borradores (contenedores) y lee datos. Ver diagnostico.py
+on:
+  push:
+    paths:
+      - "diagnosticar.txt"
+
+permissions:
+  contents: write
+
+jobs:
+  diagnostico:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Diagnostico
+        env:
+          IG_FB_TOKEN: ${{ secrets.IG_FB_TOKEN }}
+          IG_TOKEN_JESUSLOPEZFITNESS: ${{ secrets.IG_TOKEN_JESUSLOPEZFITNESS }}
+          IG_TOKEN_JESUSS_FITNESS: ${{ secrets.IG_TOKEN_JESUSS_FITNESS }}
+        run: timeout 25m python -u diagnostico.py || true
+      - name: Guardar el resultado
+        if: always()
+        run: |
+          git config user.name "publicador"
+          git config user.email "publicador@users.noreply.github.com"
+          git add diagnostico.txt
+          git diff --cached --quiet && exit 0
+          git commit -m "Resultado del diagnostico"
+          git pull --rebase
+          git push

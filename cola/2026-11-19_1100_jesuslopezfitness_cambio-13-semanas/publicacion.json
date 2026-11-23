@@ -1,0 +1,33 @@
+{
+  "tipo": "historia",
+  "cuenta": "jesuslopezfitness",
+  "fecha": "2026-11-19 11:00",
+  "archivos": [
+    "01.jpg",
+    "02.jpg",
+    "03.jpg",
+    "04.jpg"
+  ],
+  "estado": "publicado",
+  "publicadas": [
+    {
+      "archivo": "01.jpg",
+      "media_id": "18086385755339169"
+    },
+    {
+      "archivo": "02.jpg",
+      "media_id": "18119651939042013"
+    },
+    {
+      "archivo": "03.jpg",
+      "media_id": "18079908533441127"
+    },
+    {
+      "archivo": "04.jpg",
+      "media_id": "18130739494934529"
+    }
+  ],
+  "media_id": "18130739494934529",
+  "enlace": "",
+  "publicado_el": "2026-11-19 11:03"
+}
