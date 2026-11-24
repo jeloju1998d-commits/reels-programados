@@ -5,5 +5,14 @@
   "archivos": [
     "01.jpg"
   ],
-  "estado": "pendiente"
+  "estado": "publicado",
+  "publicadas": [
+    {
+      "archivo": "01.jpg",
+      "media_id": "17923775091261712"
+    }
+  ],
+  "media_id": "17923775091261712",
+  "enlace": "",
+  "publicado_el": "2026-11-24 11:03"
 }
