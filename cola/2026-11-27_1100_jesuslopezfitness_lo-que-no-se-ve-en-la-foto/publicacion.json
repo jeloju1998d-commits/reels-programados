@@ -7,5 +7,22 @@
     "02.jpg",
     "03.jpg"
   ],
-  "estado": "pendiente"
+  "estado": "publicado",
+  "publicadas": [
+    {
+      "archivo": "01.jpg",
+      "media_id": "18455471254124833"
+    },
+    {
+      "archivo": "02.jpg",
+      "media_id": "17973919827200789"
+    },
+    {
+      "archivo": "03.jpg",
+      "media_id": "17957975175275148"
+    }
+  ],
+  "media_id": "17957975175275148",
+  "enlace": "",
+  "publicado_el": "2026-11-27 11:55"
 }
