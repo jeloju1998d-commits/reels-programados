@@ -178,9 +178,30 @@ def publicar(carpeta, datos, ensayo=False, ficha=None):
     tipo = datos.get("tipo", "reel")
     if tipo == "carrusel":
         return publicar_carrusel(carpeta, datos, ensayo)
+    if tipo == "imagen":
+        return publicar_imagen(carpeta, datos, ensayo)
     if tipo == "historia":
         return publicar_historias(carpeta, datos, ensayo, ficha)
     return publicar_reel(carpeta, datos, ensayo)
+
+
+def publicar_imagen(carpeta, datos, ensayo=False):
+    """Una sola foto en el feed (28/11/2026: los posts de cambios de clientes llevan 1 imagen)."""
+    ig_id, token = conexion(datos["cuenta"])
+    return con_reintentos(lambda: _imagen(carpeta, datos, ensayo, ig_id, token), "la imagen")
+
+
+def _imagen(carpeta, datos, ensayo, ig_id, token):
+    nombre = datos["archivos"][0]
+    url = url_publica(carpeta, nombre)
+    if not url:
+        raise RuntimeError("Sin enlace público a los archivos (solo funciona en GitHub)")
+    contenedor = llamar_json(f"{API}/{ig_id}/media", {
+        "image_url": url, "caption": datos.get("descripcion", ""), "access_token": token})["id"]
+    esperar(contenedor, token, nombre)
+    if ensayo:
+        return contenedor, "1 imagen"
+    return publicar_contenedor(ig_id, token, contenedor, carpeta, datos.get("descripcion", ""))
 
 
 def publicar_carrusel(carpeta, datos, ensayo=False):
@@ -429,7 +450,7 @@ def main():
         except Exception as e:
             fallos += 1  # el flujo sale en rojo y GitHub manda el correo de fallo
             seguidos = datos.get("fallos_seguidos", 0) + 1
-            if tipo in ("historia", "carrusel") and seguidos < MAX_EJECUCIONES:
+            if tipo in ("historia", "carrusel", "imagen") and seguidos < MAX_EJECUCIONES:
                 # Historias y carruseles: sigue pendiente y se reintenta en la próxima ejecución
                 # (las historias ya publicadas están apuntadas y no se repiten)
                 datos.update(fallos_seguidos=seguidos, ultimo_error=str(e))

@@ -1,4 +1,4 @@
-"""Mete una publicación terminada (reel, carrusel o historias) en la cola.
+"""Mete una publicación terminada (reel, carrusel, imagen suelta o historias) en la cola.
 
 Reel (lo de siempre):
   python encolar.py --video "FINAL.mp4" --portada "portada.jpg" --cuenta ambas ^
@@ -7,6 +7,8 @@ Reel (lo de siempre):
 Carrusel (2 a 20 imágenes o vídeos, en orden; 4:5 recomendado):
   python encolar.py --tipo carrusel --archivos s1.png s2.png s3.mp4 --cuenta ambas ^
       --fecha "2026-11-20 13:00" --descripcion-archivo "leyenda.txt" --nombre gemelos
+
+Imagen suelta (1 sola foto en el feed; --tipo imagen --archivos foto.png ...).
 
 Historias (una o varias, se publican seguidas en ese orden; 9:16, vídeos de 3 a 60 s):
   python encolar.py --tipo historia --archivos s1.png s2.png s3.png --cuenta jesuss.fitness ^
@@ -60,7 +62,7 @@ def revisar_imagen(archivo, tipo):
     s = ffprobe(archivo)["streams"][0]
     an, al = int(s["width"]), int(s["height"])
     prop = an / al
-    if tipo == "carrusel" and not (0.8 - 0.01 <= prop <= 1.91):
+    if tipo in ("carrusel", "imagen") and not (0.8 - 0.01 <= prop <= 1.91):
         sys.exit(f"{Path(archivo).name} mide {an}×{al}: en carruseles la proporción va de 4:5 a 1,91:1")
     if tipo == "historia" and abs(prop - 9 / 16) > 0.02:
         print(f"Aviso: {Path(archivo).name} mide {an}×{al}; en historias lo ideal es 9:16")
@@ -132,7 +134,7 @@ def encolar(a, cuenta, cuando, descripcion, archivos, variante):
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("--tipo", default="reel", choices=("reel", "carrusel", "historia"))
+    p.add_argument("--tipo", default="reel", choices=("reel", "carrusel", "historia", "imagen"))
     p.add_argument("--video", help="reel: el vídeo")
     p.add_argument("--archivos", nargs="+", help="carrusel o historias: imágenes/vídeos en orden")
     p.add_argument("--portada")
@@ -168,6 +170,8 @@ def main():
         origenes = a.archivos
         if a.tipo == "carrusel" and not 2 <= len(origenes) <= 20:
             sys.exit("Un carrusel lleva de 2 a 20 archivos")
+        if a.tipo == "imagen" and len(origenes) != 1:
+            sys.exit("Una imagen suelta lleva exactamente 1 archivo")
     archivos = []
     for o in origenes:
         ext = Path(o).suffix.lower()
